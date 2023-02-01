@@ -5,11 +5,7 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 
 /**
- * 
- */
-
-/**
- * 
+ * This class represents a Server.
  * @author Trong Nguyen
  * @version 1.0
  * @date 11-02-2023
@@ -17,23 +13,35 @@ import java.net.SocketException;
 public class Server {
 
 	public static final int HOST_SERVER_PORT_NUM = 69;
-	public boolean valid = true;
-	private int counter = 0;
-	private byte[] data;
 	
+	private DatagramSocket hostServerSocket;
+	private DatagramPacket hostServerPacket, serverHostPacket;
+	
+	private byte[] data;
+	private boolean valid = true;
+	private int counter = 0;
+	
+	/**
+	 * Main method for Server.
+	 * @param args, default parameters
+	 */
 	public static void main(String[] args) {
 		new Server();
 	}
 	
-	private DatagramPacket hostServerPacket, serverHostPacket;
-	private DatagramSocket hostServerSocket;
-	
+	/**
+	 * Constructor for Server.
+	 */
 	public Server() {
 		run();
 	}
 
+	/**
+	 * Run Server methods.
+	 */
 	private void run() {
 		createSockets();
+		// repeat the following "forever"
 		while (valid) {
 			receivePacket();
 			sendPacket();
@@ -44,10 +52,13 @@ public class Server {
 	}
 	
 	/**
-	 * 
+	 * Construct a datagram socket and bind it to any available
+	 * port on the local host machine. This socket will be used to
+	 * send and receive UDP Datagram packets.
 	 */
 	public void createSockets() {
 		try {
+			// creates a DatagramSocket to use to receive (port 69)
 			hostServerSocket = new DatagramSocket(HOST_SERVER_PORT_NUM);
 		} catch (SocketException se) {
 			se.printStackTrace();
@@ -55,12 +66,19 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * Construct a DatagramPacket for receiving packets up 
+	 * to 100 bytes long (the length of the byte array).
+	 */
 	public void receivePacket() {
 		byte[] data = new byte[100];
 		hostServerPacket = new DatagramPacket(data, data.length);
 		try {
+			// waits to receive a request
 			System.out.println(this.getClass().getName() + ": Waiting...\n");
 			hostServerSocket.receive(hostServerPacket);
+			//  prints out the information it has received 
+			// (print the request both as a String and as bytes)
 			printPacketContent(hostServerPacket, "received", counter);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -69,12 +87,13 @@ public class Server {
 	}	
 	
 	/**
-	 * Create a new datagram packet containing the string received from the client.
+	 * Create a new datagram packet containing the string received from the Host.
 	 * Construct a datagram packet that is to be sent to a specified port 
 	 * on a specified host.
 	 */
 	public void sendPacket() {
 		byte[] data = null;
+		// the packet should be either a "read request" or a "write request"
 		if (verifyMessage(hostServerPacket)) {
 			data = createResponse(hostServerPacket);
 		} else {
@@ -86,12 +105,107 @@ public class Server {
 				hostServerPacket.getAddress(), 
 				hostServerPacket.getPort());
 		try {
-			hostServerSocket.send(serverHostPacket);
+			// creates a DatagramSocket to use just for this response
+			DatagramSocket serverHostSocket = new DatagramSocket();
+			// sends the packet via the new socket to the port it received the request from 
+			serverHostSocket.send(serverHostPacket);
+			// prints out the response packet information
 			printPacketContent(serverHostPacket, "sending", counter);
+			// closes the socket it just created
+			serverHostSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
+	}
+	
+	/**
+	 * Verify the encoded the message specified from the Client.
+	 * @param receivePacket, DatagramPacket
+	 * @return byte[], the message
+	 */
+	private boolean verifyMessage(DatagramPacket receivePacket) {
+		// the server should parse the packet to confirm that the format is valid
+		data = receivePacket.getData();
+		int index = 0;
+		while (index < receivePacket.getLength()) {
+			if (index == 0) {
+				if (data[index] == 0x00) {
+					// starts with byte 0
+					index++;
+				} else {
+					break;
+				}
+			}
+			if (index == 1) {
+				if (data[index] == 0x01) {
+					// read request, second byte 1
+					index++;
+				} else if (data[index] == 0x02) {
+					// write request, second byte 2
+					index++;
+				} else {
+					break;
+				}
+			}
+			if (index > 1) {
+				if (data[index] > 0x20 && data[index] < 0x7F) {
+					// some text
+					index++;
+				} else if (data[index] == 0x00) {
+					// followed by byte 0
+					index++;
+					if (data[index] > 0x20 && data[index] < 0x7F) {
+						// some text
+						index++;
+					} else if (data[index] == 0x00) {
+						if (index == receivePacket.getLength()) {
+							// ends with byte 0
+							return true;
+						}
+					} else {
+						break;
+					}
+				} else {
+					break;
+				}
+			} else {
+				break;
+			}
+		}
+		String invalid = new String(receivePacket.getData(), 0, receivePacket.getLength());
+		System.err.println(invalid);
+		valid = false;
+		return false;
+	}
+	
+	/**
+	 * Create response to Host when receive packet is valid.
+	 * @param receivePacket, DatagramPacket
+	 * @return byte[], message
+	 */
+	private byte[] createResponse(DatagramPacket receivePacket) {
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		data = receivePacket.getData();
+		if (data[1] == 0x01) {
+			// read request, sends back 0 3 0 1 (exactly four bytes)
+			os.write(0x00);
+			os.write(0x03);
+			os.write(0x00);
+			os.write(0x01);
+		} else if (data[1] == 0x02) {
+			// write request, sends back 0 4 0 0 (exactly four bytes)
+			os.write(0x00);
+			os.write(0x04);
+			os.write(0x00);
+			os.write(0x00);
+		} else {
+			// if the packet is invalid, the server throws an exception and quits
+			String invalid = new String(receivePacket.getData(), 0, receivePacket.getLength());
+			System.err.println(invalid);
+			valid = false;
+		}
+		return os.toByteArray();
 	}
 	
 	/**
@@ -115,78 +229,5 @@ public class Server {
 	        e.printStackTrace();
 	        System.exit(1);
 	    }
-	}
-	
-	/**
-	 * Verify the encoded the message specified from the Client.
-	 * @param receivePacket, DatagramPacket
-	 * @return byte[], the message
-	 */
-	private boolean verifyMessage(DatagramPacket receivePacket) {
-		data = receivePacket.getData();
-		int index = 0;
-		while (index < receivePacket.getLength()) {
-			if (index == 0) {
-				if (data[index] == 0x00) {
-					index++;
-				} else {
-					break;
-				}
-			}
-			if (index == 1) {
-				if (data[index] == 0x01) {
-					// Read request
-					index++;
-				} else if (data[index] == 0x02) {
-					// Write request
-					index++;
-				} else {
-					break;
-				}
-			}
-			if (index > 1) {
-				if (data[index] > 0x20 && data[index] < 0x7F) {
-					index++;
-				} else if (data[index] == 0x00) {
-					index++;
-					if (data[index] > 0x20 && data[index] < 0x7F) {
-						index++;
-					} else if (data[index] == 0x00) {
-						if (index == receivePacket.getLength()) {
-							return true;
-						}
-					} else {
-						break;
-					}
-				} else {
-					break;
-				}
-			} else {
-				break;
-			}
-		}
-		String invalid = new String(receivePacket.getData(), 0, receivePacket.getLength());
-		System.err.println(invalid);
-		valid = false;
-		return false;
-	}
-	
-	private byte[] createResponse(DatagramPacket receivePacket) {
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		data = receivePacket.getData();
-		if (data[1] == 0x01) {
-			// Read request
-			os.write(0x00);
-			os.write(0x03);
-			os.write(0x00);
-			os.write(0x01);
-		} else if (data[1] == 0x02) {
-			// Write request
-			os.write(0x00);
-			os.write(0x04);
-			os.write(0x00);
-			os.write(0x00);
-		}
-		return os.toByteArray();
 	}
 }
