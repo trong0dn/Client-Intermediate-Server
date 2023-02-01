@@ -17,16 +17,16 @@ import java.net.SocketException;
  */
 public class Client {
 	
-	private static final int CLIENT_SEND_PORT_NUM = 23;
-	
-	private static final int REPEAT_NUM = 10;
-	private static final String FILENAME = "filename.txt";
-	
-	private DatagramSocket sendReceiveSocket;
-	private DatagramPacket sendPacket;
-	private DatagramPacket receivePacket;
-	
+	private static final int CLIENT_HOST_PORT_NUM = 23;
+	private static final int REPEAT_NUM = 11;
+	private static final String FILENAME = "test.txt";
+	private static final String MODE = "octet";
+	private int sendCounter = 0;
+	private int receiveCounter = 0;
 	byte[] data;
+	
+	private DatagramSocket clientHostSocket;
+	private DatagramPacket clientHostPacket, hostClientPacket;
 	
 	/**
 	 * Main method for Client.
@@ -40,20 +40,24 @@ public class Client {
 	 * Constructor for Client.
 	 */
 	public Client() {
-		init();
+		run();
 	}
 	
 	/**
-	 * Initialize Client methods.
+	 * Run Client methods.
 	 */
-	private void init() {
-		sendReceiveSocket();
-		for (int i = 0; i < REPEAT_NUM; i++) {
-			createSendPacket();
-			sendPacket();
+	private void run() {
+		createSocket();
+		while (sendCounter < REPEAT_NUM) {
+			sendHostPacket();
+			sendCounter++;
 		}
-		receivePacket();
-		closeSocket();
+		while (receiveCounter < REPEAT_NUM) {
+			receiveHostPacket();
+			receiveCounter++;
+		}
+		clientHostSocket.close();
+		System.out.println(this.getClass().getName() + ": Program completed.");
 	}
 	
 	/**
@@ -61,9 +65,9 @@ public class Client {
 	 * port on the local host machine. This socket will be used to
 	 * send and receive UDP Datagram packets.
 	 */
-	private void sendReceiveSocket() {
+	private void createSocket() {
 		try {
-			sendReceiveSocket = new DatagramSocket();
+			clientHostSocket = new DatagramSocket();
 		} catch (SocketException se) {
 			se.printStackTrace();
 			System.exit(1);
@@ -71,75 +75,14 @@ public class Client {
 	}
 	
 	/**
-	 * Encodes the message specified for Client.
-	 * @return byte[], the message
-	 * @throws IOException
-	 */
-	private byte[] encodeMessage() throws IOException {
-		byte zero = (byte) 0;
-		byte one = (byte) 1;
-		byte two = (byte) 2;
-		byte[] filename = FILENAME.getBytes();
-		byte[] netascii = "netascii".getBytes();
-		byte[] octet = "octet".getBytes();
-	
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		for (int i = 0; i < REPEAT_NUM; i++) {
-			if (i == 10) {
-				System.out.println("invalid");
-			} else if (i % 2 == 0) {
-				// Read request format
-				os.write(zero); 
-				os.write(one); 
-			} else {
-				// Write request format
-				os.write(zero);
-				os.write(two);
-			}
-		}
-		os.write(filename);
-		os.write(zero);
-		if (randomSelection(0, 1) == 0) {
-			os.write(octet);
-		} else {
-			os.write(netascii);
-		}
-		os.write(zero);
-
-		return os.toByteArray();
-	}
-	
-	/**
-	 * Randomly chooses a number between a range.
-	 * @return random integer within minimum and maximum range
-	 */
-	public int randomSelection(int min, int max) {
-		int range = (max - min) + 1;
-		return (int)(Math.random() * range) + min;
-	}
-	
-	/**
-	 * Prepare a DatagramPacket and send it via sendReceiveSocket
-	 * to port on the destination host.
-	 * @throws IOException 
-	 */
-	public void createSendPacket() {
-		try {
-			byte[] msg = encodeMessage();
-			sendPacket = new DatagramPacket(msg, msg.length, InetAddress.getLocalHost(), CLIENT_SEND_PORT_NUM);
-			printPacketContent(sendPacket, "sending");
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-	
-	/**
 	 * Send the datagram packet to the host via the send/receive socket.
 	 */
-	public void sendPacket() {
+	public void sendHostPacket() {
 		try {
-			sendReceiveSocket.send(sendPacket);
+			data = encodeMessage();
+			clientHostPacket = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), CLIENT_HOST_PORT_NUM);
+			clientHostSocket.send(clientHostPacket);
+			printPacketContent(clientHostPacket, "sending", sendCounter);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -150,13 +93,12 @@ public class Client {
 	 * Construct a DatagramPacket for receiving packets up 
 	 * to 100 bytes long (the length of the byte array).
 	 */
-	public void receivePacket() {
-		data = new byte[100];
-		receivePacket = new DatagramPacket(data, data.length);
+	public void receiveHostPacket() {
 		try {
-			// Block until a datagram is received via sendReceiveSocket. 
-			sendReceiveSocket.receive(receivePacket);
-			printPacketContent(sendPacket, "received");			
+			data = new byte[100];
+			hostClientPacket = new DatagramPacket(data, data.length);
+			clientHostSocket.receive(hostClientPacket);
+			printPacketContent(hostClientPacket, "received", receiveCounter);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -164,29 +106,50 @@ public class Client {
 	}
 
 	/**
-	 * Close the socket.
+	 * Encodes the message specified for Client.
+	 * @return byte[], the message
+	 * @throws IOException
 	 */
-	public void closeSocket() {
-		sendReceiveSocket.close();
+	private byte[] encodeMessage() throws IOException {
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		if (sendCounter % 2 == 0) {
+			// Read request format
+			os.write(0x00); 
+			os.write(0x01); 
+		} else {
+			// Write request format
+			os.write(0x00);
+			os.write(0x02);
+		}
+		os.write(Integer.toString(sendCounter).getBytes());
+		os.write(FILENAME.getBytes());
+		os.write(0x00);
+		os.write(MODE.getBytes());
+		os.write(0x00);
+		byte[] message = os.toByteArray();
+		os.flush();
+		if (sendCounter == REPEAT_NUM - 1) {
+			message = "INVALID_REQUEST".getBytes();
+			System.err.println(String.format("INVALID_REQUEST"));
+		}
+		return message;
 	}
 	
 	/**
 	 * Prints out the information it has put in the packet 
 	 * both as a String and as bytes. 
-	 * @param receivePacket, DatagramPacket
+	 * @param packet, DatagramPacket
 	 * @param direction, received or sending
 	 */
-	private void printPacketContent(DatagramPacket sendPacket, String direction) {
-		System.out.println(this.getClass().getName() + ": Packet " + direction);
-	    System.out.println("To: " + sendPacket.getAddress());
-	    System.out.println("Destination port: " + sendPacket.getPort());
-	    int len = sendPacket.getLength();
-	    System.out.println("Length: " + sendPacket.getLength());
+	private void printPacketContent(DatagramPacket packet, String direction, int counter) {
+		System.out.println(this.getClass().getName() + ": Packet " + counter + " " + direction);
+	    System.out.println("Address: " + packet.getAddress());
+	    System.out.println("Port: " + packet.getPort());
+	    int len = packet.getLength();
+	    System.out.println("Length: " + packet.getLength());
 	    System.out.print("Containing: ");
-	    String packetStr = new String(sendPacket.getData(), 0, len);
+	    String packetStr = new String(packet.getData(), 0, len);
 	    System.out.println(packetStr + "\n");
-	    
-	    // Slow things down (wait 1 seconds)
 	    try {
 	        Thread.sleep(1000);
 	    } catch (InterruptedException e ) {
