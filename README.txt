@@ -1,7 +1,7 @@
 Carleton University 
 Department of Systems and Computer Engineering 
 SYSC 3303A Real-Time Concurrent Systems Winter 2023 
-Assignment 2 — Introduction to UDP
+Assignment 2 â€” Introduction to UDP
 
 @author Trong Nguyen
 @version 1.0
@@ -27,6 +27,9 @@ lab2
 |   .classpath
 |   .gitignore
 |   .project
+|   A2-UML-class.drawio.png
+|   A2-UML-sequence.drawio.png
+|   A2.drawio
 |   README.txt
 |
 +---bin
@@ -128,7 +131,7 @@ also prints out receiving and sending packet details.
 ## Disclaimer
 
 Copyright disclaimer under section 107 of the Copyright Act 1976, allowance is 
-made for “fair use” for purposes such as criticism, comment, news reporting, 
+made for â€œfair useâ€� for purposes such as criticism, comment, news reporting, 
 teaching, scholarship, education and research.
 
 Fair use is a use permitted by copyright statute that might otherwise be 
