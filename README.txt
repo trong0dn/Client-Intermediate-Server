@@ -1,1 +1,135 @@
-## README
+Carleton University 
+Department of Systems and Computer Engineering 
+SYSC 3303A Real-Time Concurrent Systems Winter 2023 
+Assignment 2 — Introduction to UDP
+
+@author Trong Nguyen
+@version 1.0
+@date 11-02-2023
+---------------------------------------------------------------------------------
+
+# Client <-> Host <-> Server DatagramPacket transfers
+
+## Problem Description
+
+The goal is to build a very basic three part system consisting of a client, an 
+intermediate host, and a server. The client sends requests to the intermediate 
+host, which sends them on to the server. The server sends responses to the 
+intermediate host, which sends them on to the client. From the client's point of 
+view, the intermediate host appears to be the server. From the server's point of 
+view, the intermediate host appears to be the client. The intermediate host will 
+not change the packets, it will just send them on. The intermediate host could be 
+updated to change packets and thus become an error simulator for the system.
+
+## Project Structure
+
+lab2
+|   .classpath
+|   .gitignore
+|   .project
+|   README.txt
+|
++---bin
+|       Client.class
+|       Host.class
+|       Server.class
+|
+\---src
+        Client.java
+        Host.java
+        Server.java
+            
+## Requirements and Dependencies
+
+This application was created on Windows 10 OS using Eclipses IDE.
+Run on the latest version of jdk-17 using Java 17.
+
+No other external dependencies required.
+
+## Compiling and Running the Application
+
+Download and extract the .zip file. Then import the source code directly and 
+run the program in local IDE, otherwise the program can be compiled and 
+executed via Command Prompt. Note that each program requires its own 
+terminal. In other words, it must be able to run multiple main programs 
+(projects) concurrently.
+
+```console
+> cd C:\..\..\\lab2\src\			    		// Navigate to the src directory	
+> javac *.java							// Compile the source code
+> java -cp . Server						// Set classpath to run application
+> java -cp . Host						// Set classpath to run application
+> java -cp . Client						// Set classpath to run application
+```
+
+## Background Preamble
+
+### Traversing the Network-Interface layer with Internet Protocol (IP)
+
+The IP layer receives packets of data from upper layers of the protocol stack,
+which is then encapsulated by a *packet* in an IP datagram, which is then 
+passed through the Network-Interface layer to be transmitted over a network.
+The IP datagram header contains many metadata about the IP addresses of the
+source and destination host. These Network-Interface layers maps the IP
+addresses to a physical network address. Once the IP layer receives the IP
+datagram from the Network-Interface layer, the packets may be extracts and 
+passed to other layers in the network.
+
+### Disadvantages of IP transmission & Port Protocol
+
+IP is known as *connectionless" meaning that each packet is treated
+independently of others. Hence, a sequence of packets may travel over 
+different paths between a source and destination. As it can be observed in 
+this small project the ports from source and destination can differ locally,
+yet, the sending and receiving packets are received correctly. Moreover, IP 
+is unreliable as the delivery of packets is not guaranteed. As some packets
+may be lost, duplicate, or even delivered out of order unbeknownst to the 
+sender and receiver. 
+
+With the disadvantages of IP transmission, IP addresses are able to specify
+host, not processes running on those host. Hence, each computer requires to 
+maintain a set of protocol ports.
+
+### User Datagram Protocol (UDP)
+
+UDP provides unreliable connectionless delivery services using IP to
+transport messages among networks, with the added ability to distinguish
+multiple destinations within a local host computer, via ports. UDP is a 
+specific example of a Transport Layer using Transport Protocol Packets 
+called UDP Datagrams.
+
+## Technical Specifications
+
+### Client
+
+The Client is designed to send DatagramPackets using DatagramSockets 
+specified to a well-known port number: 23. The message in the packet
+itself is encode as byte array. The client creates a DatagramSocket to use
+both send and receive repeat the following 11 times. In addition, prints out
+receiving and sending packet details. The Client also receives packets from
+the Server as well.
+
+### Host
+
+The Host is a relay node within the network. The Host receives packets from 
+the Client on port 23. And creates another DatagramPacket with the same 
+information to be sent to the Server on port 69. It also prints out receiving 
+and sending packet details. Moreover, the Host also receive packets from the
+Server which it also creates another DatagramPacket to send back to the 
+Client.
+
+### Server
+
+The Server receives packets from the Host on port 69, then validates the 
+encoded message. Once validated, the Host creates another DatagramPacket 
+with a different message to be sent back to the Host on the same port. It 
+also prints out receiving and sending packet details.
+
+## Disclaimer
+
+Copyright disclaimer under section 107 of the Copyright Act 1976, allowance is 
+made for “fair use” for purposes such as criticism, comment, news reporting, 
+teaching, scholarship, education and research.
+
+Fair use is a use permitted by copyright statute that might otherwise be 
+infringing.
