@@ -1,7 +1,7 @@
 Carleton University 
 Department of Systems and Computer Engineering 
 SYSC 3303A Real-Time Concurrent Systems Winter 2023 
-Assignment 2 ó Introduction to UDP
+Assignment 2 ‚Äî Introduction to UDP
 
 @author Trong Nguyen
 @version 1.0
@@ -55,11 +55,11 @@ terminal. In other words, it must be able to run multiple main programs
 (projects) concurrently.
 
 ```console
-> cd C:\..\..\\lab2\src\			    		// Navigate to the src directory	
-> javac *.java							// Compile the source code
-> java -cp . Server						// Set classpath to run application
-> java -cp . Host						// Set classpath to run application
-> java -cp . Client						// Set classpath to run application
+> cd C:\..\..\\lab2\src\	// Navigate to the src directory	
+> javac *.java			// Compile the source code
+> java -cp . Server		// Set classpath to run application
+> java -cp . Host		// Set classpath to run application
+> java -cp . Client		// Set classpath to run application
 ```
 
 ## Background Preamble
@@ -128,7 +128,7 @@ also prints out receiving and sending packet details.
 ## Disclaimer
 
 Copyright disclaimer under section 107 of the Copyright Act 1976, allowance is 
-made for ìfair useî for purposes such as criticism, comment, news reporting, 
+made for ‚Äúfair use‚Äù for purposes such as criticism, comment, news reporting, 
 teaching, scholarship, education and research.
 
 Fair use is a use permitted by copyright statute that might otherwise be 
