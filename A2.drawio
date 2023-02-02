@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-02-02T20:24:42.876Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="nqDaBS0faa_77fZd6gRr" version="20.8.15" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2023-02-02T20:25:34.133Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="71s57onqT3dAEDHfm5u5" version="20.8.15" type="github" pages="2">
   <diagram name="UML-class" id="dCM6QkRdeZ3WyoUlGl6J">
     <mxGraphModel dx="1290" dy="573" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -23,40 +23,40 @@
           <mxGeometry y="214" width="260" height="136" as="geometry" />
         </mxCell>
         <mxCell id="lHi-mELWxNAjk7QKTjWc-7" value="Host" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-          <mxGeometry x="430" y="120" width="290" height="400" as="geometry" />
+          <mxGeometry x="440" y="160" width="290" height="380" as="geometry" />
         </mxCell>
         <mxCell id="lHi-mELWxNAjk7QKTjWc-8" value="- CLIENT_HOST_PORT_NUM: int = 23&#xa;- HOST_SERVER_PORT_NUM: int = 69&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="lHi-mELWxNAjk7QKTjWc-7" vertex="1">
           <mxGeometry y="26" width="290" height="34" as="geometry" />
         </mxCell>
-        <mxCell id="lHi-mELWxNAjk7QKTjWc-9" value="- clientHostSocket: DatagramSocket&#xa;- hostServerSocket: DatagramSocket&#xa;- clientHostPacket: DatagramPacket&#xa;- hostServerPacket: DatagramPacket&#xa;- serverHostPacket: DatagramPacket&#xa;- hostClientPacket: DatagramPacket&#xa;- data: byte[]&#xa;- valid: boolean&#xa;- counter: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="lHi-mELWxNAjk7QKTjWc-7" vertex="1">
-          <mxGeometry y="60" width="290" height="140" as="geometry" />
+        <mxCell id="lHi-mELWxNAjk7QKTjWc-9" value="- clientHostSocket: DatagramSocket&#xa;- hostServerSocket: DatagramSocket&#xa;- clientHostPacket: DatagramPacket&#xa;- hostServerPacket: DatagramPacket&#xa;- serverHostPacket: DatagramPacket&#xa;- hostClientPacket: DatagramPacket&#xa;- data: byte[]&#xa;- counter: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="lHi-mELWxNAjk7QKTjWc-7" vertex="1">
+          <mxGeometry y="60" width="290" height="120" as="geometry" />
         </mxCell>
         <mxCell id="lHi-mELWxNAjk7QKTjWc-10" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="lHi-mELWxNAjk7QKTjWc-7" vertex="1">
-          <mxGeometry y="200" width="290" height="8" as="geometry" />
+          <mxGeometry y="180" width="290" height="8" as="geometry" />
         </mxCell>
         <mxCell id="lHi-mELWxNAjk7QKTjWc-11" value="+ main(args: String[]): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="lHi-mELWxNAjk7QKTjWc-7" vertex="1">
-          <mxGeometry y="208" width="290" height="26" as="geometry" />
+          <mxGeometry y="188" width="290" height="26" as="geometry" />
         </mxCell>
         <mxCell id="lHi-mELWxNAjk7QKTjWc-12" value="+ Host()&#xa;- run(): void&#xa;- createSocket(): void&#xa;- receiveClientPacket(): void&#xa;- sendServerPacket(): void&#xa;- receiveServerPacket(): void&#xa;- sendClientPacket(): void&#xa;- verifyMessage(receivePacket: Datagram): boolean&#xa;- printPacketContent(packet: DatagramPacket, &#xa;                                direction: String, &#xa;                                counter: int): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="lHi-mELWxNAjk7QKTjWc-7" vertex="1">
-          <mxGeometry y="234" width="290" height="166" as="geometry" />
+          <mxGeometry y="214" width="290" height="166" as="geometry" />
         </mxCell>
         <mxCell id="lHi-mELWxNAjk7QKTjWc-13" value="Server" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-          <mxGeometry x="840" y="155" width="290" height="330" as="geometry" />
+          <mxGeometry x="840" y="185" width="290" height="320" as="geometry" />
         </mxCell>
         <mxCell id="lHi-mELWxNAjk7QKTjWc-14" value="- HOST_SERVER_PORT_NUM: int = 69&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="lHi-mELWxNAjk7QKTjWc-13" vertex="1">
           <mxGeometry y="26" width="290" height="24" as="geometry" />
         </mxCell>
-        <mxCell id="lHi-mELWxNAjk7QKTjWc-15" value="- hostServerSocket: DatagramSocket&#xa;- hostServerPacket: DatagramPacket&#xa;- serverHostPacket: DatagramPacket&#xa;- data: byte[]&#xa;- valid: boolean&#xa;- counter: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="lHi-mELWxNAjk7QKTjWc-13" vertex="1">
-          <mxGeometry y="50" width="290" height="90" as="geometry" />
+        <mxCell id="lHi-mELWxNAjk7QKTjWc-15" value="- hostServerSocket: DatagramSocket&#xa;- hostServerPacket: DatagramPacket&#xa;- serverHostPacket: DatagramPacket&#xa;- data: byte[]&#xa;- counter: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="lHi-mELWxNAjk7QKTjWc-13" vertex="1">
+          <mxGeometry y="50" width="290" height="80" as="geometry" />
         </mxCell>
         <mxCell id="lHi-mELWxNAjk7QKTjWc-16" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="lHi-mELWxNAjk7QKTjWc-13" vertex="1">
-          <mxGeometry y="140" width="290" height="8" as="geometry" />
+          <mxGeometry y="130" width="290" height="8" as="geometry" />
         </mxCell>
         <mxCell id="lHi-mELWxNAjk7QKTjWc-17" value="+ main(args: String[]): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="lHi-mELWxNAjk7QKTjWc-13" vertex="1">
-          <mxGeometry y="148" width="290" height="26" as="geometry" />
+          <mxGeometry y="138" width="290" height="26" as="geometry" />
         </mxCell>
         <mxCell id="lHi-mELWxNAjk7QKTjWc-18" value="+ Server()&#xa;- run(): void&#xa;- createSocket(): void&#xa;- receivePacket(): void&#xa;- sendPacket(): void&#xa;- verifyMessage(receivePacket: Datagram): boolean&#xa;- createResponse(receivePacket: Datagram): byte[]&#xa;- printPacketContent(packet: DatagramPacket, &#xa;                                direction: String, &#xa;                                counter: int): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="lHi-mELWxNAjk7QKTjWc-13" vertex="1">
-          <mxGeometry y="174" width="290" height="156" as="geometry" />
+          <mxGeometry y="164" width="290" height="156" as="geometry" />
         </mxCell>
         <mxCell id="lHi-mELWxNAjk7QKTjWc-19" value="«DatagramPacket»" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" parent="1" source="lHi-mELWxNAjk7QKTjWc-5" target="lHi-mELWxNAjk7QKTjWc-9" edge="1">
           <mxGeometry x="-0.0864" y="17" width="160" relative="1" as="geometry">
