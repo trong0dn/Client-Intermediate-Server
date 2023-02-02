@@ -40,7 +40,7 @@ public class Server {
 	 * Run Server methods.
 	 */
 	private void run() {
-		createSockets();
+		createSocket();
 		// repeat the following "forever"
 		while (valid) {
 			receivePacket();
@@ -56,7 +56,7 @@ public class Server {
 	 * port on the local host machine. This socket will be used to
 	 * send and receive UDP Datagram packets.
 	 */
-	public void createSockets() {
+	public void createSocket() {
 		try {
 			// creates a DatagramSocket to use to receive (port 69)
 			hostServerSocket = new DatagramSocket(HOST_SERVER_PORT_NUM);
