@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-02-02T05:46:19.963Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="j-vXxcD2rWR0_X0nzwtv" version="20.8.13" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2023-02-02T05:51:42.504Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="VcHTSoQeWC07kBjQu6tq" version="20.8.13" type="github" pages="2">
   <diagram name="UML-class" id="dCM6QkRdeZ3WyoUlGl6J">
     <mxGraphModel dx="1395" dy="657" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -90,7 +90,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="jpfCJUJ7kFXtB_zzf5rm" name="UML-sequence">
-    <mxGraphModel dx="2790" dy="1313" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1395" dy="657" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -112,7 +112,7 @@
             <mxPoint x="505" y="1700" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="8wa8UrGe-wMQwSdy52P2-6" value=":DatagramSocket" style="html=1;" vertex="1" parent="1">
+        <mxCell id="8wa8UrGe-wMQwSdy52P2-6" value="clientHostSocket&lt;br&gt;:DatagramSocket" style="html=1;" vertex="1" parent="1">
           <mxGeometry x="760" y="750" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="8wa8UrGe-wMQwSdy52P2-7" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="8wa8UrGe-wMQwSdy52P2-8" target="8wa8UrGe-wMQwSdy52P2-6">
@@ -250,7 +250,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-1" value=":DatagramPacket" style="html=1;" vertex="1" parent="1">
+        <mxCell id="WFIimTjjh8RcCPIJt9Wq-1" value="clientHostPacket&lt;br&gt;:DatagramPacket" style="html=1;" vertex="1" parent="1">
           <mxGeometry x="650" y="880" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-2" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="WFIimTjjh8RcCPIJt9Wq-3" target="WFIimTjjh8RcCPIJt9Wq-1">
@@ -299,7 +299,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-10" value=":DatagramSocket" style="html=1;" vertex="1" parent="1">
+        <mxCell id="WFIimTjjh8RcCPIJt9Wq-10" value="hostClientSocket&lt;br&gt;:DatagramSocket" style="html=1;" vertex="1" parent="1">
           <mxGeometry x="910" y="750" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-11" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
@@ -317,7 +317,7 @@
             <mxPoint x="845" y="810" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-14" value=":DatagramPacket" style="html=1;" vertex="1" parent="1">
+        <mxCell id="WFIimTjjh8RcCPIJt9Wq-14" value="clientHostPacket&lt;br&gt;:DatagramPacket" style="html=1;" vertex="1" parent="1">
           <mxGeometry x="1030" y="879" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-15" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="WFIimTjjh8RcCPIJt9Wq-16" target="WFIimTjjh8RcCPIJt9Wq-14">
@@ -389,9 +389,6 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-28" value="loop" style="shape=umlFrame;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="400" y="810" width="390" height="230" as="geometry" />
-        </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-31" value="send()" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
           <mxGeometry width="80" relative="1" as="geometry">
             <mxPoint x="520" y="980" as="sourcePoint" />
@@ -401,13 +398,10 @@
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-34" value="[while (n &amp;lt; 11)]" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="405" y="835" width="90" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-35" value="loop" style="shape=umlFrame;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="400" y="1410" width="390" height="200" as="geometry" />
-        </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-36" value="[while (n &amp;lt; 11)]" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="405" y="1435" width="90" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-42" value=":DatagramPacket" style="html=1;" vertex="1" parent="1">
+        <mxCell id="WFIimTjjh8RcCPIJt9Wq-42" value="hostClientPacket&lt;br&gt;:DatagramPacket" style="html=1;" vertex="1" parent="1">
           <mxGeometry x="650" y="1440" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-45" value="«create»" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" edge="1" parent="1">
@@ -524,7 +518,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-63" value=":DatagramSocket" style="html=1;" vertex="1" parent="1">
+        <mxCell id="WFIimTjjh8RcCPIJt9Wq-63" value="hostServerSocket&lt;br&gt;:DatagramSocket" style="html=1;" vertex="1" parent="1">
           <mxGeometry x="1470" y="750" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-64" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
@@ -567,7 +561,7 @@
             <mxPoint y="-4" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-70" value=":DatagramPacket" style="html=1;" vertex="1" parent="1">
+        <mxCell id="WFIimTjjh8RcCPIJt9Wq-70" value="hostServerPacket&lt;br&gt;:DatagramPacket" style="html=1;" vertex="1" parent="1">
           <mxGeometry x="1320" y="1064.5" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-71" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="WFIimTjjh8RcCPIJt9Wq-72" target="WFIimTjjh8RcCPIJt9Wq-70">
@@ -617,7 +611,7 @@
             <mxPoint y="-4" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-83" value=":DatagramPacket" style="html=1;" vertex="1" parent="1">
+        <mxCell id="WFIimTjjh8RcCPIJt9Wq-83" value="serverHostPacket&lt;br&gt;:DatagramPacket" style="html=1;" vertex="1" parent="1">
           <mxGeometry x="1320" y="1260" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-84" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" target="WFIimTjjh8RcCPIJt9Wq-83" source="WFIimTjjh8RcCPIJt9Wq-87">
@@ -667,7 +661,7 @@
             <mxPoint y="-4" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-91" value=":DatagramPacket" style="html=1;" vertex="1" parent="1">
+        <mxCell id="WFIimTjjh8RcCPIJt9Wq-91" value="hostClientPacket&lt;br&gt;:DatagramPacket" style="html=1;" vertex="1" parent="1">
           <mxGeometry x="1030" y="1440" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-92" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="WFIimTjjh8RcCPIJt9Wq-93" target="WFIimTjjh8RcCPIJt9Wq-91">
@@ -731,9 +725,6 @@
             <mxPoint x="1205" y="1630" as="sourcePoint" />
             <mxPoint x="980" y="1630" as="targetPoint" />
           </mxGeometry>
-        </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-101" value="loop" style="shape=umlFrame;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="890" y="835" width="590" height="765" as="geometry" />
         </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-102" value="[while valid]" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="890" y="865" width="70" height="30" as="geometry" />
@@ -810,7 +801,7 @@
             <mxPoint x="1510" y="1630" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-113" value=":DatagramSocket" style="html=1;" vertex="1" parent="1">
+        <mxCell id="WFIimTjjh8RcCPIJt9Wq-113" value="hostServerSocket&lt;br&gt;:DatagramSocket" style="html=1;" vertex="1" parent="1">
           <mxGeometry x="1620" y="750" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-114" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
@@ -950,7 +941,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-134" value=":DatagramPacket" style="html=1;" vertex="1" parent="1">
+        <mxCell id="WFIimTjjh8RcCPIJt9Wq-134" value="hostServerPacket&lt;br&gt;:DatagramPacket" style="html=1;" vertex="1" parent="1">
           <mxGeometry x="1830" y="1070" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-135" value="" style="endArrow=none;html=1;rounded=0;" edge="1" target="WFIimTjjh8RcCPIJt9Wq-134" parent="1">
@@ -972,7 +963,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-138" value=":DatagramPacket" style="html=1;" vertex="1" parent="1">
+        <mxCell id="WFIimTjjh8RcCPIJt9Wq-138" value="serverHostPacket&lt;br&gt;:DatagramPacket" style="html=1;" vertex="1" parent="1">
           <mxGeometry x="1835" y="1280" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-139" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" target="WFIimTjjh8RcCPIJt9Wq-138" source="WFIimTjjh8RcCPIJt9Wq-140">
@@ -984,7 +975,7 @@
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-140" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="1880" y="1509" width="20" height="21" as="geometry" />
         </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-141" value=":DatagramSocket" style="html=1;" vertex="1" parent="1">
+        <mxCell id="WFIimTjjh8RcCPIJt9Wq-141" value="serverHostSocket&lt;br&gt;:DatagramSocket" style="html=1;" vertex="1" parent="1">
           <mxGeometry x="1710" y="1420" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-142" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
@@ -1055,11 +1046,20 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="WFIimTjjh8RcCPIJt9Wq-153" value="loop" style="shape=umlFrame;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1595" y="860" width="555" height="765" as="geometry" />
-        </mxCell>
         <mxCell id="WFIimTjjh8RcCPIJt9Wq-154" value="[while valid]" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="1595" y="890" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="bJIHk06xYcGBOpJwo_Qk-1" value="loop" style="shape=umlFrame;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="810" width="390" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="bJIHk06xYcGBOpJwo_Qk-2" value="loop" style="shape=umlFrame;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="1410" width="390" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="bJIHk06xYcGBOpJwo_Qk-4" value="loop" style="shape=umlFrame;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="900" y="845" width="590" height="765" as="geometry" />
+        </mxCell>
+        <mxCell id="bJIHk06xYcGBOpJwo_Qk-5" value="loop" style="shape=umlFrame;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1595" y="860" width="555" height="765" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
