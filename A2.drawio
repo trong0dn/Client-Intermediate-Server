@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-02-02T20:25:34.133Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="71s57onqT3dAEDHfm5u5" version="20.8.15" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2023-02-02T20:26:00.297Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="4WeoFXtuvxoapo-RDw4h" version="20.8.15" type="github" pages="2">
   <diagram name="UML-class" id="dCM6QkRdeZ3WyoUlGl6J">
     <mxGraphModel dx="1290" dy="573" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -58,28 +58,28 @@
         <mxCell id="lHi-mELWxNAjk7QKTjWc-18" value="+ Server()&#xa;- run(): void&#xa;- createSocket(): void&#xa;- receivePacket(): void&#xa;- sendPacket(): void&#xa;- verifyMessage(receivePacket: Datagram): boolean&#xa;- createResponse(receivePacket: Datagram): byte[]&#xa;- printPacketContent(packet: DatagramPacket, &#xa;                                direction: String, &#xa;                                counter: int): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="lHi-mELWxNAjk7QKTjWc-13" vertex="1">
           <mxGeometry y="164" width="290" height="156" as="geometry" />
         </mxCell>
-        <mxCell id="lHi-mELWxNAjk7QKTjWc-19" value="«DatagramPacket»" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" parent="1" source="lHi-mELWxNAjk7QKTjWc-5" target="lHi-mELWxNAjk7QKTjWc-9" edge="1">
+        <mxCell id="lHi-mELWxNAjk7QKTjWc-19" value="«send/receive»" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" parent="1" source="lHi-mELWxNAjk7QKTjWc-5" target="lHi-mELWxNAjk7QKTjWc-9" edge="1">
           <mxGeometry x="-0.0864" y="17" width="160" relative="1" as="geometry">
             <mxPoint x="630" y="430" as="sourcePoint" />
             <mxPoint x="790" y="430" as="targetPoint" />
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="lHi-mELWxNAjk7QKTjWc-23" value="«DatagramPacket»" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" parent="1" source="lHi-mELWxNAjk7QKTjWc-9" target="lHi-mELWxNAjk7QKTjWc-15" edge="1">
+        <mxCell id="lHi-mELWxNAjk7QKTjWc-23" value="«send/receive»" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" parent="1" source="lHi-mELWxNAjk7QKTjWc-9" target="lHi-mELWxNAjk7QKTjWc-15" edge="1">
           <mxGeometry x="-0.0798" y="17" width="160" relative="1" as="geometry">
             <mxPoint x="709.9999999999998" y="261.76058823529405" as="sourcePoint" />
             <mxPoint x="860" y="259.9958823529411" as="targetPoint" />
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="lHi-mELWxNAjk7QKTjWc-24" value="«DatagramPacket»" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" parent="1" source="lHi-mELWxNAjk7QKTjWc-18" target="lHi-mELWxNAjk7QKTjWc-12" edge="1">
-          <mxGeometry x="0.0182" y="15" width="160" relative="1" as="geometry">
+        <mxCell id="lHi-mELWxNAjk7QKTjWc-24" value="«send/receive»" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" parent="1" source="lHi-mELWxNAjk7QKTjWc-18" target="lHi-mELWxNAjk7QKTjWc-12" edge="1">
+          <mxGeometry x="-0.0701" y="15" width="160" relative="1" as="geometry">
             <mxPoint x="730" y="247.6219512195122" as="sourcePoint" />
             <mxPoint x="850" y="237.3780487804878" as="targetPoint" />
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="lHi-mELWxNAjk7QKTjWc-25" value="«DatagramPacket»" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" parent="1" source="lHi-mELWxNAjk7QKTjWc-12" target="lHi-mELWxNAjk7QKTjWc-6" edge="1">
+        <mxCell id="lHi-mELWxNAjk7QKTjWc-25" value="«send/receive»" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" parent="1" source="lHi-mELWxNAjk7QKTjWc-12" target="lHi-mELWxNAjk7QKTjWc-6" edge="1">
           <mxGeometry x="-0.0798" y="17" width="160" relative="1" as="geometry">
             <mxPoint x="850" y="404.98780487804856" as="sourcePoint" />
             <mxPoint x="729.9999999999995" y="424.012195121951" as="targetPoint" />
