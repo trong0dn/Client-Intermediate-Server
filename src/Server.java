@@ -18,7 +18,6 @@ public class Server {
 	private DatagramPacket hostServerPacket, serverHostPacket;
 	
 	private byte[] data;
-	private boolean valid = true;
 	private int counter = 0;
 	
 	/**
@@ -42,13 +41,11 @@ public class Server {
 	private void run() {
 		createSocket();
 		// repeat the following "forever"
-		while (valid) {
+		while (true) {
 			receivePacket();
 			sendPacket();
 			counter++;
 		}
-		hostServerSocket.close();
-		System.out.println(this.getClass().getName() + ": Program completed.");
 	}
 	
 	/**
@@ -175,7 +172,6 @@ public class Server {
 		}
 		String invalid = new String(receivePacket.getData(), 0, receivePacket.getLength());
 		System.err.println(invalid);
-		valid = false;
 		return false;
 	}
 	
@@ -203,7 +199,6 @@ public class Server {
 			// if the packet is invalid, the server throws an exception and quits
 			String invalid = new String(receivePacket.getData(), 0, receivePacket.getLength());
 			System.err.println(invalid);
-			valid = false;
 		}
 		return os.toByteArray();
 	}

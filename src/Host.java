@@ -18,7 +18,6 @@ public class Host {
 	private DatagramPacket clientHostPacket, hostServerPacket, serverHostPacket, hostClientPacket;
 	
 	private byte[] data;
-	private boolean valid = true;
 	private int counter = 0;
 	
 	/**
@@ -42,16 +41,13 @@ public class Host {
 	private void run() {
 		createSocket();
 		// repeat the following "forever"
-		while (valid) {
+		while (true) {
 			receiveClientPacket();
 			sendServerPacket();
 			receiveServerPacket();
 			sendClientPacket();
 			counter++;
 		}
-		clientHostSocket.close();
-		hostServerSocket.close();
-		System.out.println(this.getClass().getName() + ": Program completed.");
 	}
 
 	/**
@@ -135,13 +131,14 @@ public class Host {
 	 * Send the datagram packet to the host via the DatagramSocket to Server.
 	 */
 	public void sendClientPacket() {
-		valid = verifyMessage(serverHostPacket);
-		// forms a packet to send back to the Client sending the request 
-		hostClientPacket = new DatagramPacket(
-				serverHostPacket.getData(),
-				serverHostPacket.getLength(), 
-				serverHostPacket.getAddress(), 
-				clientHostPacket.getPort());
+		if (verifyMessage(serverHostPacket)) {
+			// forms a packet to send back to the Client sending the request 
+			hostClientPacket = new DatagramPacket(
+					serverHostPacket.getData(),
+					serverHostPacket.getLength(), 
+					serverHostPacket.getAddress(), 
+					clientHostPacket.getPort());
+		}
 		try {
 			// sends the request
 			clientHostSocket.send(hostClientPacket);
