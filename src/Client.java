@@ -50,12 +50,12 @@ public class Client {
 			sendHostPacket();
 			sendCounter++;
 		}
-		while (receiveCounter < REPEAT_NUM) {
+		while (receiveCounter < REPEAT_NUM - 1) {
 			receiveHostPacket();
 			receiveCounter++;
 		}
 		clientHostSocket.close();
-		System.out.println(this.getClass().getName() + ": Program completed.");
+		System.out.println(this.getClass().getName() + ": Program terminated.");
 	}
 	
 	/**

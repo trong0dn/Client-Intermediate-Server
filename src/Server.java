@@ -19,7 +19,7 @@ public class Server {
 	
 	private byte[] data;
 	private int counter = 0;
-	
+
 	/**
 	 * Main method for Server.
 	 * @param args, default parameters
@@ -94,7 +94,8 @@ public class Server {
 		if (verifyMessage(hostServerPacket)) {
 			data = createResponse(hostServerPacket);
 		} else {
-			data = "INVALID_REQUEST".getBytes();
+			System.err.println(this.getClass().getName() + ": Program terminated.");
+			System.exit(1);
 		}
 		serverHostPacket = new DatagramPacket(
 				data, 
@@ -170,8 +171,6 @@ public class Server {
 				break;
 			}
 		}
-		String invalid = new String(receivePacket.getData(), 0, receivePacket.getLength());
-		System.err.println(invalid);
 		return false;
 	}
 	

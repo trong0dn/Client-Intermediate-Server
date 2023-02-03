@@ -13,6 +13,7 @@ public class Host {
 	
 	private static final int CLIENT_HOST_PORT_NUM = 23;
 	private static final int HOST_SERVER_PORT_NUM = 69;
+	private static final int TIMEOUT = 10000;
 
 	private DatagramSocket clientHostSocket, hostServerSocket;
 	private DatagramPacket clientHostPacket, hostServerPacket, serverHostPacket, hostClientPacket;
@@ -58,8 +59,10 @@ public class Host {
 		try {
 			// creates a DatagramSocket to use to receive (port 23) 
 			clientHostSocket = new DatagramSocket(CLIENT_HOST_PORT_NUM);
+			clientHostSocket.setSoTimeout(TIMEOUT);
 			// creates a DatagramSocket to use to send and receive
 			hostServerSocket = new DatagramSocket();
+			hostServerSocket.setSoTimeout(TIMEOUT);
 		} catch (SocketException se) {
 			se.printStackTrace();
 			System.exit(1);
@@ -122,6 +125,7 @@ public class Host {
 			// prints out the information received
 			printPacketContent(serverHostPacket, "received", counter);
 		} catch (IOException e) {
+			System.err.println(this.getClass().getName() + ": Program terminated.");
 			e.printStackTrace();
 			System.exit(1);
 		}
