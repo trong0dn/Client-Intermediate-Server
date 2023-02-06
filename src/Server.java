@@ -40,12 +40,17 @@ public class Server {
 	 */
 	private void run() {
 		createSocket();
-		// repeat the following "forever"
-		while (true) {
-			receivePacket();
-			sendPacket();
-			counter++;
+		try {
+			// repeat the following "forever"
+			while (true) {
+				receivePacket();
+				sendPacket();
+				counter++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		hostServerSocket.close();
 	}
 	
 	/**

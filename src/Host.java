@@ -41,14 +41,20 @@ public class Host {
 	 */
 	private void run() {
 		createSocket();
-		// repeat the following "forever"
-		while (true) {
-			receiveClientPacket();
-			sendServerPacket();
-			receiveServerPacket();
-			sendClientPacket();
-			counter++;
+		try {
+			// repeat the following "forever"
+			while (true) {
+				receiveClientPacket();
+				sendServerPacket();
+				receiveServerPacket();
+				sendClientPacket();
+				counter++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		clientHostSocket.close();
+		hostServerSocket.close();
 	}
 
 	/**

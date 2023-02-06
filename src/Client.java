@@ -45,14 +45,18 @@ public class Client {
 	 */
 	private void run() {
 		createSocket();
-		// repeat the following 11 times
-		while (sendCounter < REPEAT_NUM) {
-			sendHostPacket();
-			sendCounter++;
-		}
-		while (receiveCounter < REPEAT_NUM - 1) {
-			receiveHostPacket();
-			receiveCounter++;
+		try {
+			// repeat the following 11 times
+			while (sendCounter < REPEAT_NUM) {
+				sendHostPacket();
+				sendCounter++;
+			}
+			while (receiveCounter < REPEAT_NUM - 1) {
+				receiveHostPacket();
+				receiveCounter++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		clientHostSocket.close();
 		System.out.println(this.getClass().getName() + ": Program terminated.");
