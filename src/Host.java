@@ -131,8 +131,8 @@ public class Host {
 			// prints out the information received
 			printPacketContent(serverHostPacket, "received", counter);
 		} catch (IOException e) {
+			System.err.println("java.net.SocketTimeoutException: Receive timed out");
 			System.err.println(this.getClass().getName() + ": Program terminated.");
-			e.printStackTrace();
 			System.exit(1);
 		}
 	}

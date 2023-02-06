@@ -59,7 +59,7 @@ public class Client {
 			e.printStackTrace();
 		}
 		clientHostSocket.close();
-		System.out.println(this.getClass().getName() + ": Program terminated.");
+		System.err.println(this.getClass().getName() + ": Program terminated.");
 	}
 	
 	/**
