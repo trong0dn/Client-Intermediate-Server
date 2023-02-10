@@ -4,12 +4,12 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 
 /**
- * This class represents a Host.
+ * This class represents an Intermediate Host.
  * @author Trong Nguyen
  * @version 1.0
  * @date 11-02-2023
  */
-public class Host {
+public class Intermediate {
 	
 	private static final int CLIENT_HOST_PORT_NUM = 23;
 	private static final int HOST_SERVER_PORT_NUM = 69;
@@ -26,13 +26,13 @@ public class Host {
 	 * @param args, default parameters
 	 */
 	public static void main(String[] args) {
-		new Host();
+		new Intermediate();
 	}
 	
 	/**
 	 * Constructor for Host.
 	 */
-	public Host() {
+	public Intermediate() {
 		run();
 	}
 

@@ -8,7 +8,7 @@ Assignment 2 - Introduction to UDP
 @date 11-02-2023
 ---------------------------------------------------------------------------------
 
-# Client <-> Host <-> Server DatagramPacket transfers
+# Client <-> Intermediate <-> Server DatagramPacket transfers
 
 ## Problem Description
 
@@ -27,7 +27,9 @@ lab2
 |   .classpath
 |   .gitignore
 |   .project
+|   A2-UML-class.drawio.pdf
 |   A2-UML-class.drawio.png
+|   A2-UML-sequence.drawio.pdf
 |   A2-UML-sequence.drawio.png
 |   A2.drawio
 |   README.txt
@@ -37,12 +39,12 @@ lab2
 |
 +---bin
 |       Client.class
-|       Host.class
+|       Intermediate.class
 |       Server.class
 |
 \---src
         Client.java
-        Host.java
+        Intermediate.java
         Server.java
             
 ## Requirements and Dependencies
@@ -61,11 +63,11 @@ terminal. In other words, it must be able to run multiple main programs
 (projects) concurrently.
 
 ```console
-> cd C:\..\..\\lab2\src\	// Navigate to the src directory	
-> javac *.java			// Compile the source code
-> java -cp . Server		// Set classpath to run application
-> java -cp . Host		// Set classpath to run application
-> java -cp . Client		// Set classpath to run application
+> cd C:\..\..\\lab2\src\			// Navigate to the src directory	
+> javac *.java					// Compile the source code
+> java -cp . Server				// Set classpath to run application
+> java -cp . Intermediate		// Set classpath to run application
+> java -cp . Client				// Set classpath to run application
 ```
 
 ## Background Preamble
@@ -115,21 +117,21 @@ both send and receive repeat the following 11 times. In addition, prints out
 receiving and sending packet details. The Client also receives packets from
 the Server as well.
 
-### Host
+### Intermediate
 
-The Host is a relay node within the network. The Host receives packets from 
-the Client on port 23. And creates another DatagramPacket with the same 
-information to be sent to the Server on port 69. It also prints out receiving 
-and sending packet details. Moreover, the Host also receive packets from the
-Server which it also creates another DatagramPacket to send back to the 
-Client.
+The Intermediate Host is a relay node within the network. The Intermediate 
+receives packets from the Client on port 23. And creates another 
+DatagramPacket with the same information to be sent to the Server on port 
+69. It also prints out receiving and sending packet details. Moreover, 
+the Intermediate also receive packets from the Server which it also creates 
+another DatagramPacket to send back to the Client.
 
 ### Server
 
-The Server receives packets from the Host on port 69, then validates the 
-encoded message. Once validated, the Host creates another DatagramPacket 
-with a different message to be sent back to the Host on the same port. It 
-also prints out receiving and sending packet details.
+The Server receives packets from the Intermediate on port 69, then validates 
+the encoded message. Once validated, the Intermediate creates another 
+DatagramPacket with a different message to be sent back to the Intermediate
+on the same port. It also prints out receiving and sending packet details.
 
 ## Disclaimer
 
