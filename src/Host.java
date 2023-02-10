@@ -150,10 +150,12 @@ public class Host {
 					clientHostPacket.getPort());
 		}
 		try {
+			DatagramSocket sendToClientSocket = new DatagramSocket();
 			// sends the request
-			clientHostSocket.send(hostClientPacket);
+			sendToClientSocket.send(hostClientPacket);
 			// prints out the information being sent
 			printPacketContent(hostClientPacket, "sending", counter);
+			sendToClientSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
