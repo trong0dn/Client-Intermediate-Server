@@ -1,51 +1,36 @@
 Carleton University 
 Department of Systems and Computer Engineering 
 SYSC 3303A Real-Time Concurrent Systems Winter 2023 
-Assignment 2 - Introduction to UDP
+Assignment 3 - Remote Procedure Calls
 
 @author Trong Nguyen
-@version 1.0
-@date 11-02-2023
+@version 2.0
+@date 04-03-2023
 ---------------------------------------------------------------------------------
 
 # Client <-> Intermediate <-> Server DatagramPacket transfers
 
 ## Problem Description
 
-The goal is to build a very basic three part system consisting of a client, an 
-intermediate host, and a server. The client sends requests to the intermediate 
-host, which sends them on to the server. The server sends responses to the 
-intermediate host, which sends them on to the client. From the client's point of 
-view, the intermediate host appears to be the server. From the server's point of 
-view, the intermediate host appears to be the client. The intermediate host will 
-not change the packets, it will just send them on. The intermediate host could be 
-updated to change packets and thus become an error simulator for the system.
+The goal is to change the three part system consisting of a client, an 
+intermediate host, and a server from asynchronous UDP and convert it to use 
+synchronous communication to establish a two-way channel from the client to the 
+server. In effect, you will now be using remote procedure calls to transfer data 
+from the client to the server using the intermediate host. The following sequence 
+diagram shows how a basic write request takes place.
+
+[sequence-diagram](/src/resources/sequence-diagram.png)
+
+## Specification
+
+The algorithm is similar to asynchronous UDP. However, the Client will now wait 
+for the Intermediate task to accept the data and then reply rather than continuing
+on to wait for the acknowledgement packet directly. 
 
 ## Project Structure
 
-lab2
-|   .classpath
-|   .gitignore
-|   .project
-|   A2-UML-class.drawio.pdf
-|   A2-UML-class.drawio.png
-|   A2-UML-sequence.drawio.pdf
-|   A2-UML-sequence.drawio.png
-|   A2.drawio
-|   README.txt
-|
-+---.settings
-|       org.eclipse.core.resources.prefs
-|
-+---bin
-|       Client.class
-|       Intermediate.class
-|       Server.class
-|
-\---src
-        Client.java
-        Intermediate.java
-        Server.java
+lab3
+
             
 ## Requirements and Dependencies
 
@@ -69,42 +54,6 @@ terminal. In other words, it must be able to run multiple main programs
 > java -cp . Intermediate		// Set classpath to run application
 > java -cp . Client				// Set classpath to run application
 ```
-
-## Background Preamble
-
-### Traversing the Network-Interface layer with Internet Protocol (IP)
-
-The IP layer receives packets of data from upper layers of the protocol stack,
-which is then encapsulated by a *packet* in an IP datagram, which is then 
-passed through the Network-Interface layer to be transmitted over a network.
-The IP datagram header contains many metadata about the IP addresses of the
-source and destination host. These Network-Interface layers maps the IP
-addresses to a physical network address. Once the IP layer receives the IP
-datagram from the Network-Interface layer, the packets may be extracts and 
-passed to other layers in the network.
-
-### Disadvantages of IP transmission & Port Protocol
-
-IP is known as *connectionless" meaning that each packet is treated
-independently of others. Hence, a sequence of packets may travel over 
-different paths between a source and destination. As it can be observed in 
-this small project the ports from source and destination can differ locally,
-yet, the sending and receiving packets are received correctly. Moreover, IP 
-is unreliable as the delivery of packets is not guaranteed. As some packets
-may be lost, duplicate, or even delivered out of order unbeknownst to the 
-sender and receiver. 
-
-With the disadvantages of IP transmission, IP addresses are able to specify
-host, not processes running on those host. Hence, each computer requires to 
-maintain a set of protocol ports.
-
-### User Datagram Protocol (UDP)
-
-UDP provides unreliable connectionless delivery services using IP to
-transport messages among networks, with the added ability to distinguish
-multiple destinations within a local host computer, via ports. UDP is a 
-specific example of a Transport Layer using Transport Protocol Packets 
-called UDP Datagrams.
 
 ## Technical Specifications
 
