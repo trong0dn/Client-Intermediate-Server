@@ -2,21 +2,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.SocketException;
+import java.net.InetAddress;
 
 /**
  * This class represents a Server.
  * @author Trong Nguyen
- * @version 1.0
- * @date 11-02-2023
+ * @version 2.0
+ * @date 04/03/2023
  */
 public class Server {
 
-	public static final int HOST_SERVER_PORT_NUM = 69;
-	
-	private DatagramSocket hostServerSocket;
-	private DatagramPacket hostServerPacket, serverHostPacket;
-	
+	public static final int DATA_HOST_PORT_NUM = 69;
+
+	private DatagramSocket dataSocket, ackSocket;
 	private byte[] data;
 	private int counter = 0;
 
@@ -39,83 +37,89 @@ public class Server {
 	 * Run Server methods.
 	 */
 	private void run() {
-		createSocket();
 		try {
-			// repeat the following "forever"
 			while (true) {
-				receivePacket();
-				sendPacket();
+				send();
+				DatagramPacket reply = receiveData();
+				sendAck(reply);
+				receive();
 				counter++;
+				dataSocket.close();
+				ackSocket.close();
+				System.out.println("-------------------");
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e ) {
+			        e.printStackTrace();
+			        System.exit(1);
+			    }
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		hostServerSocket.close();
+		System.err.println(this.getClass().getName() + ": Program terminated.");
 	}
 	
-	/**
-	 * Construct a datagram socket and bind it to any available
-	 * port on the local host machine. This socket will be used to
-	 * send and receive UDP Datagram packets.
-	 */
-	public void createSocket() {
+	public void send() {
+		data = (this.getClass().getName() + " - Requesting data").getBytes();
 		try {
-			// creates a DatagramSocket to use to receive (port 69)
-			hostServerSocket = new DatagramSocket(HOST_SERVER_PORT_NUM);
-		} catch (SocketException se) {
-			se.printStackTrace();
-			System.exit(1);
-		}
-	}
-	
-	/**
-	 * Construct a DatagramPacket for receiving packets up 
-	 * to 100 bytes long (the length of the byte array).
-	 */
-	public void receivePacket() {
-		byte[] data = new byte[100];
-		hostServerPacket = new DatagramPacket(data, data.length);
-		try {
-			// waits to receive a request
-			System.out.println(this.getClass().getName() + ": Waiting...\n");
-			hostServerSocket.receive(hostServerPacket);
-			//  prints out the information it has received 
-			// (print the request both as a String and as bytes)
-			printPacketContent(hostServerPacket, "received", counter);
+			dataSocket = new DatagramSocket();
+			DatagramPacket sendHostPacket = new DatagramPacket(
+					data, 
+					data.length, 
+					InetAddress.getLocalHost(), 
+					DATA_HOST_PORT_NUM);
+			dataSocket.send(sendHostPacket);
+			printPacketContent(sendHostPacket, "request data from host", counter);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
+	}
+	
+	public DatagramPacket receiveData() {
+		byte[] data = new byte[100];
+		DatagramPacket receiveHostPacket = new DatagramPacket(data, data.length);
+		try {
+			System.out.println(this.getClass().getName() + ": Waiting...\n");
+			dataSocket.receive(receiveHostPacket);
+			printPacketContent(receiveHostPacket, "receive data from host", counter);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		return receiveHostPacket;
 	}	
 	
-	/**
-	 * Create a new datagram packet containing the string received from the Host.
-	 * Construct a datagram packet that is to be sent to a specified port 
-	 * on a specified host.
-	 */
-	public void sendPacket() {
-		byte[] data = null;
-		// the packet should be either a "read request" or a "write request"
-		if (verifyMessage(hostServerPacket)) {
-			data = createResponse(hostServerPacket);
+	public void sendAck(DatagramPacket receiveHostPacket) {
+		if (verifyMessage(receiveHostPacket)) {
+			data = createResponse(receiveHostPacket);
 		} else {
 			System.err.println(this.getClass().getName() + ": Program terminated.");
 			System.exit(1);
 		}
-		serverHostPacket = new DatagramPacket(
+		DatagramPacket sendAckHostPacket = new DatagramPacket(
 				data, 
 				data.length, 
-				hostServerPacket.getAddress(), 
-				hostServerPacket.getPort());
+				receiveHostPacket.getAddress(), 
+				receiveHostPacket.getPort());
 		try {
-			// creates a DatagramSocket to use just for this response
-			DatagramSocket serverHostSocket = new DatagramSocket();
-			// sends the packet via the new socket to the port it received the request from 
-			serverHostSocket.send(serverHostPacket);
-			// prints out the response packet information
-			printPacketContent(serverHostPacket, "sending", counter);
-			// closes the socket it just created
-			serverHostSocket.close();
+			ackSocket = new DatagramSocket();
+			ackSocket.send(sendAckHostPacket);
+			printPacketContent(sendAckHostPacket, "send ack to host", counter);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+	
+	public void receive() {
+		byte[] data = new byte[100];
+		DatagramPacket receiveAckPacket = new DatagramPacket(data, data.length);
+		try {
+			System.out.println(this.getClass().getName() + ": Waiting...\n");
+			ackSocket.receive(receiveAckPacket);
+			printPacketContent(receiveAckPacket, "receive ack from host", counter);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -199,7 +203,7 @@ public class Server {
 			os.write(0x04);
 			os.write(0x00);
 			os.write(0x00);
-		} else {
+		} else { 
 			// if the packet is invalid, the server throws an exception and quits
 			String invalid = new String(receivePacket.getData(), 0, receivePacket.getLength());
 			System.err.println(invalid);

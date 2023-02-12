@@ -8,7 +8,7 @@ Assignment 3 - Remote Procedure Calls
 @date 04-03-2023
 ---------------------------------------------------------------------------------
 
-# Client <-> Intermediate <-> Server DatagramPacket transfers
+# Client <-> Intermediate <-> Server Remote Procedure Calls
 
 ## Problem Description
 
