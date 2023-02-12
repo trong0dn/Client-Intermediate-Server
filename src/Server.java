@@ -47,12 +47,6 @@ public class Server {
 				dataSocket.close();
 				ackSocket.close();
 				System.out.println("-------------------");
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e ) {
-			        e.printStackTrace();
-			        System.exit(1);
-			    }
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
