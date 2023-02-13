@@ -10,9 +10,10 @@ import java.net.InetAddress;
  * @version 2.0
  * @date 04/03/2023
  */
-public class Server {
+public class Server implements Runnable {
 
 	public static final int DATA_HOST_PORT_NUM = 69;
+	private static final int TIMEOUT = 5000;
 
 	private DatagramSocket dataSocket, ackSocket;
 	private byte[] data;
@@ -36,28 +37,35 @@ public class Server {
 	/**
 	 * Run Server methods.
 	 */
-	private void run() {
+	public void run() {
 		try {
+			dataSocket = new DatagramSocket();
+			ackSocket = new DatagramSocket();
+			dataSocket.setSoTimeout(TIMEOUT);
+			ackSocket.setSoTimeout(TIMEOUT);
 			while (true) {
+				counter++;
 				send();
 				DatagramPacket reply = receiveData();
 				sendAck(reply);
 				receive();
-				counter++;
-				dataSocket.close();
-				ackSocket.close();
-				System.out.println("-------------------");
+				System.out.println("--------------------------------------");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			dataSocket.close();
+			ackSocket.close();
+			System.err.println(this.getClass().getName() + ": Program terminated.");
 		}
-		System.err.println(this.getClass().getName() + ": Program terminated.");
 	}
 	
+	/**
+	 * Send request for data to Intermediate host.
+	 */
 	public void send() {
 		data = (this.getClass().getName() + " - Requesting data").getBytes();
 		try {
-			dataSocket = new DatagramSocket();
 			DatagramPacket sendHostPacket = new DatagramPacket(
 					data, 
 					data.length, 
@@ -71,6 +79,10 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * Receive data from Intermediate host.
+	 * @return DatagramPacket, message requested from Intermediate host
+	 */
 	public DatagramPacket receiveData() {
 		byte[] data = new byte[100];
 		DatagramPacket receiveHostPacket = new DatagramPacket(data, data.length);
@@ -85,10 +97,16 @@ public class Server {
 		return receiveHostPacket;
 	}	
 	
+	/**
+	 * Send acknowledge to Intermediate host.
+	 * @param receiveHostPacket DatagramPacket, data packet received from request
+	 */
 	public void sendAck(DatagramPacket receiveHostPacket) {
 		if (verifyMessage(receiveHostPacket)) {
 			data = createResponse(receiveHostPacket);
 		} else {
+			String invalid = new String(receiveHostPacket.getData(), 0, receiveHostPacket.getLength());
+			System.err.println(invalid);
 			System.err.println(this.getClass().getName() + ": Program terminated.");
 			System.exit(1);
 		}
@@ -98,7 +116,6 @@ public class Server {
 				receiveHostPacket.getAddress(), 
 				receiveHostPacket.getPort());
 		try {
-			ackSocket = new DatagramSocket();
 			ackSocket.send(sendAckHostPacket);
 			printPacketContent(sendAckHostPacket, "send ack to host", counter);
 		} catch (IOException e) {
@@ -107,6 +124,9 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * Receive reply to acknowledge from Intermediate host.
+	 */
 	public void receive() {
 		byte[] data = new byte[100];
 		DatagramPacket receiveAckPacket = new DatagramPacket(data, data.length);

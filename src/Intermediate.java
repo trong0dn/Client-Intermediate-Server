@@ -8,12 +8,13 @@ import java.net.DatagramSocket;
  * @version 2.0
  * @date 04/03/2023
  */
-public class Intermediate {
+public class Intermediate implements Runnable {
 	
 	private static final int DATA_CLIENT_PORT_NUM = 23;
 	private static final int DATA_SERVER_PORT_NUM = 69;
+	private static final int TIMEOUT = 5000;
 
-	DatagramSocket dataClientSocket, dataServerSocket, ackServerSocket, ackClientSocket;
+	DatagramSocket clientSocket, serverSocket;
 	
 	private byte[] data;
 	private int counter = 0;
@@ -25,8 +26,7 @@ public class Intermediate {
 	public static void main(String[] args) {
 		new Intermediate();
 	}
-	
-	
+		
 	/**
 	 * Constructor for Host.
 	 */
@@ -37,32 +37,40 @@ public class Intermediate {
 	/**
 	 * Run Host methods.
 	 */
-	private void run() {
+	public void run() {
 		try {
-			
+			clientSocket = new DatagramSocket(DATA_CLIENT_PORT_NUM);
+			serverSocket = new DatagramSocket(DATA_SERVER_PORT_NUM);
+			clientSocket.setSoTimeout(TIMEOUT);
+			serverSocket.setSoTimeout(TIMEOUT);
 			while (true) {
+				counter++;
 				DatagramPacket reply = replyClient();
 				replyServer(reply);
 				ackServer();
 				ackClient();
-				counter++;
-				System.out.println("-------------------");
+				System.out.println("--------------------------------------");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			serverSocket.close();
+			clientSocket.close();
+			System.err.println(this.getClass().getName() + ": Program terminated.");
 		}
-		System.err.println(this.getClass().getName() + ": Program terminated.");
 	}
 	
+	/**
+	 * Reply to Client sending data.
+	 * @return DatagramPacket, containing the same message received
+	 */
 	public DatagramPacket replyClient() {
 		data = new byte[100];
 		DatagramPacket receiveClientDataPacket = null;
-		
 		try {
-			dataClientSocket = new DatagramSocket(DATA_CLIENT_PORT_NUM);
 			receiveClientDataPacket = new DatagramPacket(data, data.length);
 			System.out.println(this.getClass().getName() + ": Waiting...\n");
-			dataClientSocket.receive(receiveClientDataPacket);
+			clientSocket.receive(receiveClientDataPacket);
 			printPacketContent(receiveClientDataPacket, "receive data from client", counter);
 			
 			DatagramPacket replyClientPacket = new DatagramPacket(
@@ -70,9 +78,8 @@ public class Intermediate {
 					receiveClientDataPacket.getLength(), 
 					receiveClientDataPacket.getAddress(), 
 					receiveClientDataPacket.getPort());
-			dataClientSocket.send(replyClientPacket);
+			clientSocket.send(replyClientPacket);
 			printPacketContent(replyClientPacket, "send reply to client", counter);
-			dataClientSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -80,14 +87,16 @@ public class Intermediate {
 		return receiveClientDataPacket;
 	}
 	
-
+	/**
+	 * Reply to Server request for data.
+	 * @param sendServerDataPacket DatagramPacket, contain the message from Client
+	 */
 	public void replyServer(DatagramPacket sendServerDataPacket) {
 		data = new byte[100];
 		try {
-			dataServerSocket = new DatagramSocket(DATA_SERVER_PORT_NUM);
 			DatagramPacket receiveServerPacket = new DatagramPacket(data, data.length);
 			System.out.println(this.getClass().getName() + ": Waiting...\n");
-			dataServerSocket.receive(receiveServerPacket);
+			serverSocket.receive(receiveServerPacket);
 			printPacketContent(receiveServerPacket, "receive reply from server", counter);
 			
 			DatagramPacket replyServerDataPacket = new DatagramPacket(
@@ -95,24 +104,26 @@ public class Intermediate {
 					sendServerDataPacket.getLength(), 
 					receiveServerPacket.getAddress(), 
 					receiveServerPacket.getPort());
-			dataServerSocket.send(replyServerDataPacket);
+			serverSocket.send(replyServerDataPacket);
 			printPacketContent(replyServerDataPacket, "send data to server", counter);
-			dataServerSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
 	}
 	
+	/**
+	 * Acknowledge Server message.
+	 */
 	public void ackServer() {
 		data = new byte[100];
 		try {
-			ackServerSocket = new DatagramSocket(DATA_SERVER_PORT_NUM);
 			DatagramPacket receiveServerAckPacket = new DatagramPacket(data, data.length);
 			System.out.println(this.getClass().getName() + ": Waiting...\n");
-			ackServerSocket.receive(receiveServerAckPacket);
+			serverSocket.receive(receiveServerAckPacket);
 			printPacketContent(receiveServerAckPacket, "received ack from server", counter);
 			
+			DatagramSocket ackServerSocket = new DatagramSocket();
 			DatagramPacket replyServerAckPacket = new DatagramPacket(
 					receiveServerAckPacket.getData(),
 					receiveServerAckPacket.getLength(), 
@@ -122,19 +133,23 @@ public class Intermediate {
 			printPacketContent(replyServerAckPacket, "reply ack to server", counter);
 			ackServerSocket.close();
 		} catch (IOException e) {
+			e.printStackTrace();
 			System.exit(1);
 		}
 	}
 	
+	/**
+	 * Acknowledge Client message.
+	 */
 	public void ackClient() {
 		data = new byte[100];
 		try {
-			ackClientSocket = new DatagramSocket(DATA_CLIENT_PORT_NUM);
 			DatagramPacket receiveClientAckPacket = new DatagramPacket(data, data.length);
 			System.out.println(this.getClass().getName() + ": Waiting...\n");
-			ackClientSocket.receive(receiveClientAckPacket);
+			clientSocket.receive(receiveClientAckPacket);
 			printPacketContent(receiveClientAckPacket, "receive ack from client", counter);
 			
+			DatagramSocket ackClientSocket = new DatagramSocket();
 			DatagramPacket replyClientAckPacket = new DatagramPacket(
 					receiveClientAckPacket.getData(), 
 					receiveClientAckPacket.getLength(), 

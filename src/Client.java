@@ -10,12 +10,13 @@ import java.net.InetAddress;
  * @version 2.0
  * @date 04/03/2023
  */
-public class Client {
+public class Client implements Runnable {
 	
 	private static final int REPEAT_NUM = 11;
 	private static final int DATA_HOST_PORT_NUM = 23;
 	private static final String FILENAME = "test.txt";
 	private static final String MODE = "octet";
+	private static final int TIMEOUT = 5000;
 	
 	private DatagramSocket dataSocket, ackSocket;
 	private int sendCounter = 0;
@@ -39,27 +40,37 @@ public class Client {
 	/**
 	 * Run Client methods.
 	 */
-	private void run() {
+	public void run() {
 		try {
-			while (sendCounter < REPEAT_NUM && receiveCounter < REPEAT_NUM - 1) {
+			dataSocket = new DatagramSocket();
+			ackSocket = new DatagramSocket();
+			dataSocket.setSoTimeout(TIMEOUT);
+			ackSocket.setSoTimeout(TIMEOUT);		
+			while (true) {
+				sendCounter++;
 				byte[] data = encodeMessage();
 				sendData(data);
 				DatagramPacket reply = receive();
-				sendCounter++;
+				receiveCounter++;
 				send(reply);
 				receiveAck();
-				receiveCounter++;
-				System.out.println("-------------------");
+				System.out.println("--------------------------------------");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			dataSocket.close();
+			ackSocket.close();
+			System.err.println(this.getClass().getName() + ": Program terminated.");
 		}
-		System.err.println(this.getClass().getName() + ": Program terminated.");
 	}
 	
+	/**
+	 * Send data to Intermediate host.
+	 * @param data byte[], client encoded message
+	 */
 	public void sendData(byte[] data) {
 		try {
-			dataSocket = new DatagramSocket();
 			DatagramPacket sendHostDataPacket = new DatagramPacket(
 					data, 
 					data.length, 
@@ -73,6 +84,10 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * Receive reply from Intermediate host.
+	 * @return DatagramPacket, message received from Intermediate host
+	 */
 	public DatagramPacket receive() {
 		byte[] data = new byte[100];
 		DatagramPacket receiveHostReplyPacket = null;
@@ -81,7 +96,6 @@ public class Client {
 			System.out.println(this.getClass().getName() + ": Waiting...\n");
 			dataSocket.receive(receiveHostReplyPacket);
 			printPacketContent(receiveHostReplyPacket, "receive reply from host", sendCounter);
-			dataSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -89,10 +103,13 @@ public class Client {
 		return receiveHostReplyPacket;
 	}
 	
+	/**
+	 * Request acknowledge from Intermediate host.
+	 * @param replyPacket DatagramPacket, message containing ack request
+	 */
 	public void send(DatagramPacket replyPacket) {
-		byte[] data = (this.getClass().getName() + ": Request ack").getBytes();
+		byte[] data = (this.getClass().getName() + " - Request ack").getBytes();
 		try {
-			ackSocket = new DatagramSocket();
 			DatagramPacket sendHostPacket = new DatagramPacket(
 					data, 
 					data.length, 
@@ -106,6 +123,9 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * Receive acknowledge request from Intermediate host.
+	 */
 	public void receiveAck() {
 		byte[] data = new byte[100];
 		DatagramPacket receiveHostAckPacket = new DatagramPacket(data, data.length);
@@ -113,7 +133,6 @@ public class Client {
 			System.out.println(this.getClass().getName() + ": Waiting...\n");
 			ackSocket.receive(receiveHostAckPacket);
 			printPacketContent(receiveHostAckPacket, "receive ack from host", receiveCounter);
-			ackSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -152,10 +171,9 @@ public class Client {
 		os.write(0x00);
 		byte[] message = os.toByteArray();
 		os.flush();
-		if (sendCounter == REPEAT_NUM - 1) {
+		if (sendCounter == REPEAT_NUM) {
 			message = "INVALID_REQUEST".getBytes();
-			System.err.println(String.format("INVALID_REQUEST"));
-		}
+		} 
 		return message;
 	}
 	
