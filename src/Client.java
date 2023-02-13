@@ -13,7 +13,7 @@ import java.net.InetAddress;
 public class Client implements Runnable {
 	
 	private static final int REPEAT_NUM = 11;
-	private static final int DATA_HOST_PORT_NUM = 23;
+	private static final int CLIENT_PORT_NUM = 23;
 	private static final String FILENAME = "test.txt";
 	private static final String MODE = "octet";
 	private static final int TIMEOUT = 5000;
@@ -39,7 +39,9 @@ public class Client implements Runnable {
 	
 	/**
 	 * Run Client methods.
+	 * @see java.lang.Runnable#run()
 	 */
+	@Override
 	public void run() {
 		try {
 			dataSocket = new DatagramSocket();
@@ -69,13 +71,13 @@ public class Client implements Runnable {
 	 * Send data to Intermediate host.
 	 * @param data byte[], client encoded message
 	 */
-	public void sendData(byte[] data) {
+	private void sendData(byte[] data) {
 		try {
 			DatagramPacket sendHostDataPacket = new DatagramPacket(
 					data, 
 					data.length, 
 					InetAddress.getLocalHost(), 
-					DATA_HOST_PORT_NUM);
+					CLIENT_PORT_NUM);
 			dataSocket.send(sendHostDataPacket);
 			printPacketContent(sendHostDataPacket, "send data to host", sendCounter);
 		} catch (IOException e) {
@@ -88,7 +90,7 @@ public class Client implements Runnable {
 	 * Receive reply from Intermediate host.
 	 * @return DatagramPacket, message received from Intermediate host
 	 */
-	public DatagramPacket receive() {
+	private DatagramPacket receive() {
 		byte[] data = new byte[100];
 		DatagramPacket receiveHostReplyPacket = null;
 		try {
@@ -107,7 +109,7 @@ public class Client implements Runnable {
 	 * Request acknowledge from Intermediate host.
 	 * @param replyPacket DatagramPacket, message containing ack request
 	 */
-	public void send(DatagramPacket replyPacket) {
+	private void send(DatagramPacket replyPacket) {
 		byte[] data = (this.getClass().getName() + " - Request ack").getBytes();
 		try {
 			DatagramPacket sendHostPacket = new DatagramPacket(
@@ -126,7 +128,7 @@ public class Client implements Runnable {
 	/**
 	 * Receive acknowledge request from Intermediate host.
 	 */
-	public void receiveAck() {
+	private void receiveAck() {
 		byte[] data = new byte[100];
 		DatagramPacket receiveHostAckPacket = new DatagramPacket(data, data.length);
 		try {
@@ -134,6 +136,7 @@ public class Client implements Runnable {
 			ackSocket.receive(receiveHostAckPacket);
 			printPacketContent(receiveHostAckPacket, "receive ack from host", receiveCounter);
 		} catch (IOException e) {
+			System.err.println(this.getClass().getName() + ": Program terminated.");
 			e.printStackTrace();
 			System.exit(1);
 		}

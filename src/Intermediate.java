@@ -10,8 +10,8 @@ import java.net.DatagramSocket;
  */
 public class Intermediate implements Runnable {
 	
-	private static final int DATA_CLIENT_PORT_NUM = 23;
-	private static final int DATA_SERVER_PORT_NUM = 69;
+	private static final int CLIENT_PORT_NUM = 23;
+	private static final int SERVER_PORT_NUM = 69;
 	private static final int TIMEOUT = 5000;
 
 	DatagramSocket clientSocket, serverSocket;
@@ -35,12 +35,14 @@ public class Intermediate implements Runnable {
 	}
 
 	/**
-	 * Run Host methods.
+	 * Run Intermediate host methods.
+	 * @see java.lang.Runnable#run()
 	 */
+	@Override
 	public void run() {
 		try {
-			clientSocket = new DatagramSocket(DATA_CLIENT_PORT_NUM);
-			serverSocket = new DatagramSocket(DATA_SERVER_PORT_NUM);
+			clientSocket = new DatagramSocket(CLIENT_PORT_NUM);
+			serverSocket = new DatagramSocket(SERVER_PORT_NUM);
 			clientSocket.setSoTimeout(TIMEOUT);
 			serverSocket.setSoTimeout(TIMEOUT);
 			while (true) {
@@ -64,7 +66,7 @@ public class Intermediate implements Runnable {
 	 * Reply to Client sending data.
 	 * @return DatagramPacket, containing the same message received
 	 */
-	public DatagramPacket replyClient() {
+	private DatagramPacket replyClient() {
 		data = new byte[100];
 		DatagramPacket receiveClientDataPacket = null;
 		try {
@@ -91,7 +93,7 @@ public class Intermediate implements Runnable {
 	 * Reply to Server request for data.
 	 * @param sendServerDataPacket DatagramPacket, contain the message from Client
 	 */
-	public void replyServer(DatagramPacket sendServerDataPacket) {
+	private void replyServer(DatagramPacket sendDataPacket) {
 		data = new byte[100];
 		try {
 			DatagramPacket receiveServerPacket = new DatagramPacket(data, data.length);
@@ -100,8 +102,8 @@ public class Intermediate implements Runnable {
 			printPacketContent(receiveServerPacket, "receive reply from server", counter);
 			
 			DatagramPacket replyServerDataPacket = new DatagramPacket(
-					sendServerDataPacket.getData(),
-					sendServerDataPacket.getLength(), 
+					sendDataPacket.getData(),
+					sendDataPacket.getLength(), 
 					receiveServerPacket.getAddress(), 
 					receiveServerPacket.getPort());
 			serverSocket.send(replyServerDataPacket);
@@ -115,7 +117,7 @@ public class Intermediate implements Runnable {
 	/**
 	 * Acknowledge Server message.
 	 */
-	public void ackServer() {
+	private void ackServer() {
 		data = new byte[100];
 		try {
 			DatagramPacket receiveServerAckPacket = new DatagramPacket(data, data.length);
@@ -133,6 +135,7 @@ public class Intermediate implements Runnable {
 			printPacketContent(replyServerAckPacket, "reply ack to server", counter);
 			ackServerSocket.close();
 		} catch (IOException e) {
+			System.err.println(this.getClass().getName() + ": Program terminated.");
 			e.printStackTrace();
 			System.exit(1);
 		}
@@ -141,7 +144,7 @@ public class Intermediate implements Runnable {
 	/**
 	 * Acknowledge Client message.
 	 */
-	public void ackClient() {
+	private void ackClient() {
 		data = new byte[100];
 		try {
 			DatagramPacket receiveClientAckPacket = new DatagramPacket(data, data.length);

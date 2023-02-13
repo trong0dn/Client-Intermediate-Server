@@ -12,7 +12,7 @@ import java.net.InetAddress;
  */
 public class Server implements Runnable {
 
-	public static final int DATA_HOST_PORT_NUM = 69;
+	public static final int SERVER_PORT_NUM = 69;
 	private static final int TIMEOUT = 5000;
 
 	private DatagramSocket dataSocket, ackSocket;
@@ -36,7 +36,9 @@ public class Server implements Runnable {
 
 	/**
 	 * Run Server methods.
+	 * @see java.lang.Runnable#run()
 	 */
+	@Override
 	public void run() {
 		try {
 			dataSocket = new DatagramSocket();
@@ -63,14 +65,14 @@ public class Server implements Runnable {
 	/**
 	 * Send request for data to Intermediate host.
 	 */
-	public void send() {
+	private void send() {
 		data = (this.getClass().getName() + " - Requesting data").getBytes();
 		try {
 			DatagramPacket sendHostPacket = new DatagramPacket(
 					data, 
 					data.length, 
 					InetAddress.getLocalHost(), 
-					DATA_HOST_PORT_NUM);
+					SERVER_PORT_NUM);
 			dataSocket.send(sendHostPacket);
 			printPacketContent(sendHostPacket, "request data from host", counter);
 		} catch (IOException e) {
