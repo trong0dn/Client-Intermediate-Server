@@ -12,7 +12,7 @@ public class Intermediate implements Runnable {
 	
 	private static final int CLIENT_PORT_NUM = 23;
 	private static final int SERVER_PORT_NUM = 69;
-	private static final int TIMEOUT = 5000;
+	private static final int TIMEOUT = 10000;
 
 	DatagramSocket clientSocket, serverSocket;
 	

@@ -16,7 +16,7 @@ public class Client implements Runnable {
 	private static final int CLIENT_PORT_NUM = 23;
 	private static final String FILENAME = "test.txt";
 	private static final String MODE = "octet";
-	private static final int TIMEOUT = 5000;
+	private static final int TIMEOUT = 10000;
 	
 	private DatagramSocket dataSocket, ackSocket;
 	private int sendCounter = 0;

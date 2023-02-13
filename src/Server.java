@@ -13,7 +13,7 @@ import java.net.InetAddress;
 public class Server implements Runnable {
 
 	public static final int SERVER_PORT_NUM = 69;
-	private static final int TIMEOUT = 5000;
+	private static final int TIMEOUT = 10000;
 
 	private DatagramSocket dataSocket, ackSocket;
 	private byte[] data;
