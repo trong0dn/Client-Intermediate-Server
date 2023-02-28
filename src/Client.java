@@ -16,7 +16,7 @@ public class Client implements Runnable {
 	private static final int CLIENT_PORT_NUM = 23;
 	private static final String FILENAME = "test.txt";
 	private static final String MODE = "octet";
-	private static final int TIMEOUT = 10000;
+	private static final int TIMEOUT = 20000;
 	
 	private DatagramSocket dataSocket, ackSocket;
 	private int sendCounter = 0;
@@ -79,7 +79,7 @@ public class Client implements Runnable {
 					InetAddress.getLocalHost(), 
 					CLIENT_PORT_NUM);
 			dataSocket.send(sendHostDataPacket);
-			printPacketContent(sendHostDataPacket, "send data to host", sendCounter);
+			printPacketContent(sendHostDataPacket, "send(:data) -> Host", sendCounter);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -97,7 +97,7 @@ public class Client implements Runnable {
 			receiveHostReplyPacket = new DatagramPacket(data, data.length);
 			System.out.println(this.getClass().getName() + ": Waiting...\n");
 			dataSocket.receive(receiveHostReplyPacket);
-			printPacketContent(receiveHostReplyPacket, "receive reply from host", sendCounter);
+			printPacketContent(receiveHostReplyPacket, "reply() <- Host", sendCounter);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -110,7 +110,7 @@ public class Client implements Runnable {
 	 * @param replyPacket DatagramPacket, message containing ack request
 	 */
 	private void send(DatagramPacket replyPacket) {
-		byte[] data = (this.getClass().getName() + " - Request ack").getBytes();
+		byte[] data = (this.getClass().getName() + " - request ack").getBytes();
 		try {
 			DatagramPacket sendHostPacket = new DatagramPacket(
 					data, 
@@ -118,7 +118,7 @@ public class Client implements Runnable {
 					replyPacket.getAddress(), 
 					replyPacket.getPort());
 			ackSocket.send(sendHostPacket);
-			printPacketContent(sendHostPacket, "request ack from host", receiveCounter);
+			printPacketContent(sendHostPacket, "send() -> Host", receiveCounter);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -134,7 +134,7 @@ public class Client implements Runnable {
 		try {
 			System.out.println(this.getClass().getName() + ": Waiting...\n");
 			ackSocket.receive(receiveHostAckPacket);
-			printPacketContent(receiveHostAckPacket, "receive ack from host", receiveCounter);
+			printPacketContent(receiveHostAckPacket, "reply(:ack) <- Host", receiveCounter);
 		} catch (IOException e) {
 			System.err.println(this.getClass().getName() + ": Program terminated.");
 			e.printStackTrace();

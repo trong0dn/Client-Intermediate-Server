@@ -13,7 +13,7 @@ import java.net.InetAddress;
 public class Server implements Runnable {
 
 	public static final int SERVER_PORT_NUM = 69;
-	private static final int TIMEOUT = 10000;
+	private static final int TIMEOUT = 20000;
 
 	private DatagramSocket dataSocket, ackSocket;
 	private byte[] data;
@@ -74,7 +74,7 @@ public class Server implements Runnable {
 					InetAddress.getLocalHost(), 
 					SERVER_PORT_NUM);
 			dataSocket.send(sendHostPacket);
-			printPacketContent(sendHostPacket, "request data from host", counter);
+			printPacketContent(sendHostPacket, "Host <- send()", counter);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -91,7 +91,7 @@ public class Server implements Runnable {
 		try {
 			System.out.println(this.getClass().getName() + ": Waiting...\n");
 			dataSocket.receive(receiveHostPacket);
-			printPacketContent(receiveHostPacket, "receive data from host", counter);
+			printPacketContent(receiveHostPacket, "Host -> reply(:data)", counter);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -119,7 +119,7 @@ public class Server implements Runnable {
 				receiveHostPacket.getPort());
 		try {
 			ackSocket.send(sendAckHostPacket);
-			printPacketContent(sendAckHostPacket, "send ack to host", counter);
+			printPacketContent(sendAckHostPacket, "Host <- send(:ack)", counter);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -135,7 +135,7 @@ public class Server implements Runnable {
 		try {
 			System.out.println(this.getClass().getName() + ": Waiting...\n");
 			ackSocket.receive(receiveAckPacket);
-			printPacketContent(receiveAckPacket, "receive ack from host", counter);
+			printPacketContent(receiveAckPacket, "Host -> reply()", counter);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
