@@ -114,6 +114,11 @@ on the same port. It also prints out receiving and sending packet details.
 Hence, the Server sends a message back to the Client via the Intermediate 
 host.
 
+## Work Products
+
+The UML class diagram showing the system can be found in the main directory
+called: `A3-class-UML.pdf`
+
 ## Questions
 
 1. Why is it suggested to use more than one thread for the implementation 
