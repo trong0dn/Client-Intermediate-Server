@@ -115,6 +115,7 @@ public class Intermediate implements Runnable {
 	
 	/**
 	 * Acknowledge Server message.
+	 * @return DatagramPacket, ack packet containing data from Server
 	 */
 	private DatagramPacket ackServer() {
 		data = new byte[100];
@@ -144,6 +145,7 @@ public class Intermediate implements Runnable {
 	
 	/**
 	 * Acknowledge Client message.
+	 * @param ack DatagramPacket, ack packet containing data from Server
 	 */
 	private void ackClient(DatagramPacket ack) {
 		data = new byte[100];
