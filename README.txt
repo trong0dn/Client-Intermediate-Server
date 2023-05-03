@@ -63,7 +63,7 @@ terminal. In other words, it must be able to run multiple main programs
 > cd C:\..\..\\lab2\src\			// Navigate to the src directory	
 > javac *.java					// Compile the source code
 > java -cp . Server				// Set classpath to run application
-> java -cp . Intermediate		// Set classpath to run application
+> java -cp . Intermediate	        	// Set classpath to run application
 > java -cp . Client				// Set classpath to run application
 ```
 
